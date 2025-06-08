@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chúc Mừng Sinh Nhật Chị Hai</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #fceabb, #f8b500);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            max-width: 700px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: #d94f4f;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 5px #f8b500;
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        p.message {
+            font-size: 1.25rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .btn-home {
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            background: #f8b500;
+            border: none;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(248, 181, 0, 0.6);
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-home:hover {
+            background: #d94f4f;
+            box-shadow: 0 5px 15px rgba(217, 79, 79, 0.7);
+        }
+
+        /* Slider styles */
+        .slider {
+            position: relative;
+            width: 600px;
+            height: 350px;
+            margin: 0 auto 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(217, 79, 79, 0.3);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .slides {
+            display: flex;
+            height: 100%;
+            /* chiều rộng lớn hơn để chứa 3 ảnh + 2 icon xen kẽ */
+            width: calc(600px * 3 + 40px * 2);
+            align-items: center;
+            user-select: none;
+        }
+
+        .slide {
+            width: 600px;
+            height: 100%;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            border-radius: 15px;
+            box-sizing: border-box;
+            margin: 0;
+            /* không cách */
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+            pointer-events: none;
+            display: block;
+            box-shadow: 0 4px 15px rgba(217, 79, 79, 0.4);
+            background: #fff;
+        }
+
+        .icon-divider {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            margin: 0 10px;
+            color: #d94f4f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            filter: drop-shadow(0 0 3px #f8b500);
+            user-select: none;
+        }
+
+        /* Confetti container */
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 9999;
+        }
+
+        /* Popup backdrop */
+        #popup-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 9998;
+        }
+
+        #popup-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Popup modal custom style */
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: linear-gradient(135deg, #ffe6e6, #ffd6d6);
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(217, 79, 79, 0.6);
+            max-width: 420px;
+            width: 90%;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            text-align: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 8px #d94f4f);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #popup.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #popup .popup-icon {
+            font-size: 5rem;
+            color: #d94f4f;
+            margin-bottom: 1rem;
+            animation: glowPulse 2.5s ease-in-out infinite;
+            text-shadow:
+                0 0 10px #d94f4f,
+                0 0 20px #d94f4f,
+                0 0 30px #f8b500,
+                0 0 40px #f8b500;
+        }
+
+        #popup h3 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.4rem;
+            margin-bottom: 1rem;
+            color: #b22222;
+            text-shadow: 1px 1px 3px #f8b500;
+        }
+
+        #popup p {
+            font-size: 1.2rem;
+            color: #5a1a1a;
+            margin-bottom: 2.5rem;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        #popup button.close-popup {
+            background: #d94f4f;
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 2.5rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(217, 79, 79, 0.7);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #popup button.close-popup:hover {
+            background: #f8b500;
+            box-shadow: 0 8px 25px rgba(248, 181, 0, 0.9);
+            color: #b22222;
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                text-shadow:
+                    0 0 10px #d94f4f,
+                    0 0 20px #d94f4f,
+                    0 0 30px #f8b500,
+                    0 0 40px #f8b500;
+            }
+
+            50% {
+                text-shadow:
+                    0 0 15px #f94144,
+                    0 0 30px #f3722c,
+                    0 0 40px #f8961e,
+                    0 0 50px #f9c74f;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="confetti"></div>
+
+    <div class="container shadow-lg" role="main" aria-label="Trang chúc mừng sinh nhật">
+        <h1><i class="fa-solid fa-cake-candles" aria-hidden="true"></i> Chúc Mừng Sinh Nhật Chị Hai!</h1>
+        <h2>Chúc chị luôn xinh đẹp, hạnh phúc và thành công!</h2>
+
+        <!-- Slider -->
+        <div class="slider" aria-label="Ảnh sinh nhật">
+            <div class="slides" id="slides">
+                <div class="slide">
+                    <img src="images/birthday1.jpg" alt="Bánh sinh nhật 1" />
+                </div>
+                <div class="icon-divider" aria-hidden="true">
+                    <i class="fa-solid fa-cake-candles"></i>
+                </div>
+                <div class="slide">
+                    <img src="images/birthday2.jpg" alt="Bánh sinh nhật 2" />
+                </div>
+                <div class="icon-divider" aria-hidden="true">
+                    <i class="fa-solid fa-cake-candles"></i>
+                </div>
+                <div class="slide">
+                    <img src="images/birthday3.jpg" alt="Bánh sinh nhật 3" />
+                </div>
+            </div>
+        </div>
+
+        <p class="message">
+            Mong mọi điều tốt đẹp nhất sẽ đến với chị trong tuổi mới.<br />
+            Hãy tận hưởng ngày đặc biệt này thật vui vẻ và ý nghĩa nhé!
+        </p>
+
+        <button class="btn btn-home" id="btnCelebrate" aria-label="Gửi lời chúc">
+            <i class="fa-solid fa-gift" aria-hidden="true"></i> Gửi Lời Chúc
+        </button>
+    </div>
+
+    <!-- Popup backdrop -->
+    <div id="popup-backdrop" tabindex="-1"></div>
+
+    <!-- Popup thông báo -->
+    <div id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc"
+        tabindex="0">
+        <div class="popup-icon" aria-hidden="true">
+            <i class="fa-solid fa-birthday-cake"></i>
+        </div>
+        <h3 id="popupTitle">Chúc Mừng Sinh Nhật Chị Hai!</h3>
+        <p id="popupDesc">Chúc chị luôn vui vẻ, thành công và hạnh phúc trong tuổi mới!</p>
+        <button class="close-popup" aria-label="Đóng thông báo">Đóng</button>
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        // GSAP animation for heading and message on page load
+        gsap.from("h1", { duration: 1.5, y: -50, opacity: 0, ease: "bounce.out" });
+        gsap.from("h2", { duration: 1.2, y: -30, opacity: 0, delay: 0.5 });
+        gsap.from(".slider", { duration: 1.5, scale: 0.8, opacity: 0, delay: 1 });
+        gsap.from(".message", { duration: 1.2, y: 20, opacity: 0, delay: 1.5 });
+        gsap.from(".btn-home", { duration: 1, scale: 0.8, opacity: 0, delay: 2 });
+
+        // Slider continuous smooth scroll
+        const slides = document.getElementById('slides');
+        const slideWidth = 600 + 40; // 600px ảnh + 40px icon width (icon có margin 10px mỗi bên)
+        const totalSlides = 3;
+        const totalDistance = slideWidth * totalSlides; // tổng chiều dài cần trượt
+
+        // Clone slides để tạo hiệu ứng lặp vô hạn mượt mà
+        const cloneSlides = slides.innerHTML;
+        slides.innerHTML += cloneSlides;
+
+        // GSAP animation chạy liên tục
+        gsap.to(slides, {
+            x: `-=${totalDistance}px`,
+            duration: 30, // chỉnh thời gian trượt (30 giây cho 3 ảnh + icon xen kẽ)
+            ease: "linear",
+            repeat: -1
+        });
+
+        // Confetti effect
+        const confettiContainer = document.getElementById('confetti');
+
+        function createConfettiPiece() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.position = 'fixed';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = randomColor();
+            confetti.style.top = '-10px';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.opacity = Math.random();
+            confetti.style.borderRadius = '50%';
+            confetti.style.pointerEvents = 'none';
+            confetti.style.zIndex = '9999';
+
+            confettiContainer.appendChild(confetti);
+
+            gsap.to(confetti, {
+                y: window.innerHeight + 20,
+                rotation: Math.random() * 360,
+                duration: 4 + Math.random() * 3,
+                ease: "power1.out",
+                onComplete: () => confetti.remove()
+            });
+        }
+
+        function randomColor() {
+            const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        let confettiInterval;
+        function startConfetti() {
+            confettiInterval = setInterval(createConfettiPiece, 150);
+        }
+        function stopConfetti() {
+            clearInterval(confettiInterval);
+        }
+
+        startConfetti();
+
+        // Popup logic
+        const popup = document.getElementById('popup');
+        const popupBackdrop = document.getElementById('popup-backdrop');
+        const btnCelebrate = document.getElementById('btnCelebrate');
+        const btnClosePopup = popup.querySelector('.close-popup');
+
+        function showPopup() {
+            popup.classList.add('show');
+            popupBackdrop.classList.add('show');
+            gsap.fromTo(popup, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+            popup.focus();
+        }
+
+        function hidePopup() {
+            gsap.to(popup, {
+                scale: 0.7, opacity: 0, duration: 0.3, ease: "power1.in", onComplete: () => {
+                    popup.classList.remove('show');
+                    popupBackdrop.classList.remove('show');
+                }
+            });
+        }
+
+        btnCelebrate.addEventListener('click', () => {
+            gsap.fromTo(btnCelebrate, { scale: 1 }, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1, ease: "power1.inOut" });
+            showPopup();
+        });
+
+        btnClosePopup.addEventListener('click', hidePopup);
+        popupBackdrop.addEventListener('click', hidePopup);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && popup.classList.contains('show')) {
+                hidePopup();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

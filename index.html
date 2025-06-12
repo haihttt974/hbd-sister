@@ -368,7 +368,7 @@
         // Slider continuous smooth scroll
         const slides = document.getElementById('slides');
         const slideWidth = 600 + 40; // 600px ảnh + 40px icon width (icon có margin 10px mỗi bên)
-        const totalSlides = 3;
+        const totalSlides = document.querySelectorAll('.slide').length; // số lượng slide
         const totalDistance = slideWidth * totalSlides; // tổng chiều dài cần trượt
 
         // Clone slides để tạo hiệu ứng lặp vô hạn mượt mà
@@ -378,7 +378,7 @@
         // GSAP animation chạy liên tục
         gsap.to(slides, {
             x: `-=${totalDistance}px`,
-            duration: 30, // chỉnh thời gian trượt (30 giây cho 3 ảnh + icon xen kẽ)
+            duration: 30, // chỉnh thời gian trượt (30 giây cho các ảnh + icon xen kẽ)
             ease: "linear",
             repeat: -1
         });
